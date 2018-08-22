@@ -8,12 +8,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
   <body>
-    <iframe style='' src='https://www.fantasyseriea.com/api/classic_table.php?lid=733'></iframe>
+    <iframe style='' src='http://cors.io/?https://www.fantasyseriea.com/api/classic_table.php?lid=733'></iframe>
     <iframe style='' src='https://www.fantasyseriea.com/api/classic_table.php?lid=1072'></iframe>
     <script type="text/javascript">
       $(function ($) {
         $.ajax({
-          url: 'https://www.fantasyseriea.com/api/classic_table.php?lid=733',
+          url: 'https://cors.io/?https://www.fantasyseriea.com/api/classic_table.php?lid=733',
           beforeSend: function(xhr) {
           },
           success: function(data){
