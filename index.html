@@ -8,17 +8,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
   <body>
-    <iframe style='' src='http://cors.io/?https://www.fantasyseriea.com/api/classic_table.php?lid=733'></iframe>
+    <iframe style='' src='https://www.fantasyseriea.com/api/classic_table.php?lid=733'></iframe>
     <iframe style='' src='https://www.fantasyseriea.com/api/classic_table.php?lid=1072'></iframe>
     <script type="text/javascript">
+      //var leagues = [ 733, 1072 ];
+      
+      function retrieveLeague(lid) {
+        return $.get('https://cors.io/?https://www.fantasyseriea.com/api/classic_table.php?lid=' + lid);
+      }
+      
+      var leagueData = [];
+      function onLeaguesRetrieved() {
+        $.each(leagueData, function () {
+          console.log(this);
+        });
+      }
+      
       $(function ($) {
-        $.ajax({
-          url: 'https://cors.io/?https://www.fantasyseriea.com/api/classic_table.php?lid=733',
-          beforeSend: function(xhr) {
-          },
-          success: function(data){
-            console.log(data);
-          }
+        retrieveLeague(733).done(function (data) {
+          leagueData.push(data);
+          retrieveLeague(1072).done(function (data) {
+            leagueData.push(data);
+            onLeaguesRetrieved();
+          });
         });
       });
     </script>
