@@ -10,5 +10,17 @@
   <body>
     <iframe style='' src='https://www.fantasyseriea.com/api/classic_table.php?lid=733'></iframe>
     <iframe style='' src='https://www.fantasyseriea.com/api/classic_table.php?lid=1072'></iframe>
+    <script type="text/javascript">
+      $(function ($) {
+        $.ajax({
+          url: 'https://www.fantasyseriea.com/api/classic_table.php?lid=733',
+          beforeSend: function(xhr) {
+          },
+          success: function(data){
+            console.log(data);
+          }
+        });
+      });
+    </script>
   </body>
 </html>
