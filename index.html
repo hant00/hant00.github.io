@@ -22,7 +22,7 @@
           let parsed = $.parseHTML(leagueData[i]);
           if (first) {
             //put up the style and table & footer
-            $('body').append(parsed[7]).append(parsed[9]).append(parsed[11]);
+            $('body').append(parsed[7]).append(parsed[9])/*.append(parsed[11])*/;
             //populate teamset & score
             $('table tr').each(function() {
               if (this.firstChild.tagName === 'TH') return true;
@@ -56,8 +56,20 @@
           }
         }
         
+        //update rank & tr class
+        let rank = 1;
+        $('table tr').each(function () {
+          if (this.firstChild.tagName === 'TH') return true;
+          this.firstChild.innerText = rank;
+          $(this).removeClass('odd');
+          if (rank % 2 === 1)
+            $(this).addClass('odd');
+          rank++;
+        });
+        
         //narrow
         $('table').css('width', '50%');
+        $('#below_tbl').css('width', '50%');
         
         //TODO: cannot track position movement between rounds.
         //      well, it can be done, by calling data of each team's history.
