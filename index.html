@@ -8,22 +8,64 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   </head>
   <body>
-    <iframe style='' src='https://www.fantasyseriea.com/api/classic_table.php?lid=733'></iframe>
-    <iframe style='' src='https://www.fantasyseriea.com/api/classic_table.php?lid=1072'></iframe>
     <script type="text/javascript">
-      //var leagues = [ 733, 1072 ];
-      
       function retrieveLeague(lid) {
         return $.get('https://cors.io/?https://www.fantasyseriea.com/api/classic_table.php?lid=' + lid);
       }
       
       var leagueData = [];
       function onLeaguesRetrieved() {
-        $.each(leagueData, function () {
-          console.log(this);
+        let teamset = [];
+        let scoreset = [];
+        for (var i = 0; i < leagueData.length; i++) {
+          let first = i === 0;
+          let parsed = $.parseHTML(leagueData[i]);
+          if (first) {
+            //put up the style and table & footer
+            $('body').append(parsed[7]).append(parsed[9]).append(parsed[11]);
+            //populate teamset & score
+            $('table tr').each(function() {
+              if (this.firstChild.tagName === 'TH') return true;
+              teamset.push($(this.children[2]).find('a').prop('href'));
+              scoreset.push(parseInt($(this).children[6].innerText));
+            });
+          } else {
+            let theTable = $(parsed[9]);
+            //iterate and merge to displayed table at appropriate row position
+            theTable.find('tr').each(function () {
+              //skip header row
+              if (this.firstChild.tagName === 'TH') return true;
+              //skip if already in displayed table
+              let theTeam = $(this.children[2]).find('a').prop('href');
+              if (teamset.indexOf(theTeam) !== -1) return true;
+              //determine where to insert
+              let theScore = parseInt($(this).children[6].innerText);
+              //TODO: this is brute-force iteration! oh well..
+              let pos = 0;
+              while (pos < scoreset.length) {
+                if (theScore > scoreset[pos])
+                  break;
+                pos++;
+              }
+              //insert
+              $(this).insertAfter($($('table').find('tr')[pos]));
+              //add to sets
+              teamset.push(theTeam);
+              scoreset.push(theScore);
+            });
+          }
         });
+        
+        //TODO: cannot track position movement between rounds.
+        //      well, it can be done, by calling data of each team's history.
+        //      but that's just too much work for now lol.
+        //      so remove up/down column for the moment
+        $('table tr').find('th:first').remove();
+        $('table tr').find('td:first').remove();
+        //TODO: pagination
       }
       
+      //var leagues = [ 733, 1072 ];
       $(function ($) {
         retrieveLeague(733).done(function (data) {
           leagueData.push(data);
