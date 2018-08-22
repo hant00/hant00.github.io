@@ -49,9 +49,9 @@
           <th style="width:9.8%;">Round</th>
         </tr>
         <tr class="preloader">
-          <th colspan="7" align="center">
+          <td colspan="7" align="center">
             <img src="loading.io-blocks.gif" />
-          </th>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -71,7 +71,7 @@
           let pos = 0;
           theTable.find('tr').each(function() {
             //skip header row
-            if (this.firstChild.tagName === 'TH') return true;
+            if (this.children[1].tagName === 'TH') return true;
             let theTeam = $(this.children[2]).find('a').prop('href');
             let theScore = parseInt(this.children[6].innerText);
             if (first) {
@@ -96,7 +96,8 @@
         //update rank & tr class
         let rank = 1;
         $('table tr').each(function () {
-          if (this.firstChild.tagName === 'TH') return true;
+          if ($(this).hasClass('preloader') || this.children[1].tagName === 'TH')
+            return true;
           this.children[1].innerText = rank;
           $(this).removeClass('odd');
           if (rank % 2 === 1)
