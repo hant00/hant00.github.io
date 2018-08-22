@@ -27,7 +27,7 @@
             $('table tr').each(function() {
               if (this.firstChild.tagName === 'TH') return true;
               teamset.push($(this.children[2]).find('a').prop('href'));
-              scoreset.push(parseInt($(this).children[6].innerText));
+              scoreset.push(parseInt(this.children[6].innerText));
             });
           } else {
             let theTable = $(parsed[9]);
@@ -39,7 +39,7 @@
               let theTeam = $(this.children[2]).find('a').prop('href');
               if (teamset.indexOf(theTeam) !== -1) return true;
               //determine where to insert
-              let theScore = parseInt($(this).children[6].innerText);
+              let theScore = parseInt(this.children[6].innerText);
               //TODO: this is brute-force iteration! oh well..
               let pos = 0;
               while (pos < scoreset.length) {
