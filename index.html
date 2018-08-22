@@ -2,15 +2,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <title>BWRAO Fantasy Leagues Standing</title>
     <meta http-Equiv="Cache-Control" Content="no-cache">
     <meta http-Equiv="Pragma" Content="no-cache">
     <meta http-Equiv="Expires" Content="0">
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style type="text/css">
     .standings_table{
       background-color:#ddd;
       font-size:13px;
-      width:50%;
+    }
+      
+    @media (max-width: 767px) {
+      .standings_table{
+        width:100%;
+      }
+    }
+      
+    @media (min-width: 768px) {
+      .standings_table{
+        width:50%;
+      }
     }
 
     .standings_table tr.odd{
@@ -28,15 +41,20 @@
       font-weight:bold;
       text-decoration:none;
     }
-
-    #below_tbl{
-      border-top:1px solid black;
-      width:100%;
-      font-size:13px;
-    }
     </style>
   </head>
   <body>
+    <p>
+      Live standing table, merged from 
+      <a href="https://www.fantasyseriea.com/en/league-standings/BWRAO/733">"BWRAO"</a> and 
+      <a href="https://www.fantasyseriea.com/en/league-standings/BWRAO-League-2/1072">"BWRAO League 2"</a> leagues.
+      It may take a while to retrieve & process data and fully load the table.
+    </p>
+    <p>
+      This is just for fun, open project. Contributions* are welcome 
+      <a href="https://github.com/hant00/hant00.github.io">here</a>.
+    </p>
+    <p>*) Code, that is. I ain't asking for no monies LOL</p>
     <table class="standings_table" cellspacing="0" cellpadding="5">
       <tbody>
         <tr>
