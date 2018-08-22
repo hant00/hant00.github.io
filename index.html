@@ -78,6 +78,8 @@
               $(this).insertAfter($($('table').find('tr')[pos]));
               pos++;
             } else {
+              //skip if already in displayed table
+              if (teamset.indexOf(theTeam) !== -1) return true;
               pos = 0;
               while (pos < scoreset.length) {
                 if (theScore > scoreset[pos])
