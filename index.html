@@ -6,8 +6,55 @@
     <meta http-Equiv="Pragma" Content="no-cache">
     <meta http-Equiv="Expires" Content="0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style type="text/css">
+    .standings_table{
+      background-color:#ddd;
+      font-size:13px;
+      width:50%;
+    }
+
+    .standings_table tr.odd{
+      background-color:#eee;
+    }
+
+    .standings_table th{
+      background-color:#fff;
+      border-bottom:1px solid #333;
+      text-align:left;
+    }
+
+    a{
+      color:#b04141;
+      font-weight:bold;
+      text-decoration:none;
+    }
+
+    #below_tbl{
+      border-top:1px solid black;
+      width:100%;
+      font-size:13px;
+    }
+    </style>
   </head>
   <body>
+    <table class="standings_table" cellspacing="0" cellpadding="5">
+      <tbody>
+        <tr>
+          <th style="width:2.6%;">&nbsp;</th>
+          <th style="width:3.1%;">#</th>
+          <th style="width:29%;">Team</th>
+          <th style="width:29%;">Manager</th>
+          <th style="width:5.8%;">C</th>
+          <th style="width:9.8%;">Total</th>
+          <th style="width:9.8%;">Round</th>
+        </tr>
+        <tr class="preloader">
+          <td colspan="7" align="center">
+            <img src="loading.io-blocks.gif" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <script type="text/javascript">
       function retrieveLeague(lid) {
         return $.get('https://cors.io/?https://www.fantasyseriea.com/api/classic_table.php?lid=' + lid);
@@ -20,28 +67,18 @@
         for (var i = 0; i < leagueData.length; i++) {
           let first = i === 0;
           let parsed = $.parseHTML(leagueData[i]);
-          if (first) {
-            //put up the style and table & footer
-            $('body').append(parsed[7]).append(parsed[9])/*.append(parsed[11])*/;
-            //populate teamset & score
-            $('table tr').each(function() {
-              if (this.firstChild.tagName === 'TH') return true;
-              teamset.push($(this.children[2]).find('a').prop('href'));
-              scoreset.push(parseInt(this.children[6].innerText));
-            });
-          } else {
-            let theTable = $(parsed[9]);
-            //iterate and merge to displayed table at appropriate row position
-            theTable.find('tr').each(function () {
-              //skip header row
-              if (this.firstChild.tagName === 'TH') return true;
-              //skip if already in displayed table
-              let theTeam = $(this.children[2]).find('a').prop('href');
-              if (teamset.indexOf(theTeam) !== -1) return true;
-              //determine where to insert
-              let theScore = parseInt(this.children[6].innerText);
-              //TODO: this is brute-force iteration! oh well..
-              let pos = 0;
+          let theTable = $(parsed[9]);
+          let pos = 0;
+          $('table tr').each(function() {
+            //skip header row
+            if (this.firstChild.tagName === 'TH') return true;
+            let theTeam = $(this.children[2]).find('a').prop('href');
+            let theScore = parseInt(this.children[6].innerText);
+            if (first) {
+              $(this).insertAfter($($('table').find('tr')[pos]));
+              pos++;
+            } else {
+              pos = 0;
               while (pos < scoreset.length) {
                 if (theScore > scoreset[pos])
                   break;
@@ -49,11 +86,11 @@
               }
               //insert
               $(this).insertAfter($($('table').find('tr')[pos]));
-              //add to sets
-              teamset.push(theTeam);
-              scoreset.push(theScore);
-            });
-          }
+            }
+            //add to sets
+            teamset.push(theTeam);
+            scoreset.push(theScore);
+          });
         }
         
         //update rank & tr class
@@ -67,10 +104,6 @@
           rank++;
         });
         
-        //narrow
-        $('table').css('width', '50%');
-        //$('#below_tbl').css('width', '50%');
-        
         //TODO: cannot track position movement between rounds.
         //      well, it can be done, by calling data of each team's history.
         //      but that's just too much work for now lol.
@@ -78,6 +111,9 @@
         $('table tr').find('th:first').remove();
         $('table tr').find('td:first').remove();
         //TODO: pagination
+        
+        //all done, remove preloader
+        $('.preloader').remove();
       }
       
       //var leagues = [ 733, 1072 ];
