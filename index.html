@@ -69,7 +69,7 @@
           let parsed = $.parseHTML(leagueData[i]);
           let theTable = $(parsed[9]);
           let pos = 0;
-          $('table tr').each(function() {
+          theTable.find('tr').each(function() {
             //skip header row
             if (this.firstChild.tagName === 'TH') return true;
             let theTeam = $(this.children[2]).find('a').prop('href');
