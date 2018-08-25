@@ -91,7 +91,7 @@
             //skip header row
             if (this.children[1].tagName === 'TH') return true;
             let theTeam = $(this.children[2]).find('a').prop('href');
-            let theScore = parseInt(this.children[6].innerText);
+            let theScore = parseInt(this.children[5].innerText);
             if (first) {
               $(this).insertAfter($($('table').find('tr')[pos]));
               pos++;
